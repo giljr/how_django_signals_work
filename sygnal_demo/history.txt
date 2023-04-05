@@ -1,0 +1,112 @@
+mkdir django_signals
+cd django_signals
+python -m venv ENV
+source ENV/bin/activate
+(source /home/j3/django_signals/ENV/bin/activate)
+pip install django
+python manage.py createproject signals
+cd signal
+python manage.py createapp base
+cd model.py
+----------------------------------------
+from django.db import models                   
+from django.contrib.auth.models import User    
+from django.db.models.signals import post_save 
+
+
+class Profile(models.Model):    
+               
+     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True) 
+     first_name = models.CharField(max_length=200, blank=True, null=True) 
+     last_name = models.CharField(max_length=200, blank=True, null=True) 
+     phone = models.CharField(max_length=200, blank=True, null=True) 
+     
+     def __str__(self):                                            
+         return str(self.user) 
+'''
+
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+            print('****************')
+            print('Profile created!')
+            print('****************')
+
+    post_save.connect(create_profile, sender=User)
+
+    def update_profile(sender, instance, created, **kwargs):
+        if created is False:
+            instance.profile.save()
+            print('****************')
+            print('Profile Updated!')
+            print('****************')
+
+    post_save.connect(update_profile, sender=User)
+    
+'''
+
+----------------------------------------
+Go to admin.py:
+----------------------------------------
+from django.contrib import admin
+from base.models import Profile
+
+admin.site.register(Profile)
+----------------------------------------
+Go to apps.py
+----------------------------------------
+from django.apps import AppConfig
+
+
+class BaseConfig(AppConfig):
+    # default_auto_field = 'django.db.models.BigAutoField'
+    name = 'base'
+
+    def ready(self):
+        import base.signals
+
+----------------------------------------
+Go to signals.py:
+----------------------------------------
+from django.apps import AppConfig
+
+
+class BaseConfig(AppConfig):
+    # default_auto_field = 'django.db.models.BigAutoField'
+    name = 'base'
+
+    def ready(self):
+        import base.signals
+
+----------------------------------------
+python manage.py makemigrations
+python manage.py migrate
+pip freeze > requirement.txt
+code .
+exit
+
+Go to /admin
+Login as superuser
+create/ update a user
+SEE Profile
+
+Output:
+--------------------------
+[05/Apr/2023 02:25:04] "GET /admin/auth/user/add/ HTTP/1.1" 200 7383
+[05/Apr/2023 02:25:04] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+****************
+Profile created!
+****************
+[05/Apr/2023 02:25:35] "POST /admin/auth/user/add/ HTTP/1.1" 302 0
+[05/Apr/2023 02:25:35] "GET /admin/auth/user/23/change/ HTTP/1.1" 200 16008
+[05/Apr/2023 02:25:35] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+****************
+Profile Updated!
+****************
+[05/Apr/2023 02:26:01] "POST /admin/auth/user/23/change/ HTTP/1.1" 302 0
+[05/Apr/2023 02:26:01] "GET /admin/auth/user/ HTTP/1.1" 200 8968
+[05/Apr/2023 02:26:01] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
+--------------------------
+
+j3
+March, 2023
