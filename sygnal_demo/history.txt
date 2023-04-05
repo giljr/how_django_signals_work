@@ -7,7 +7,8 @@ pip install django
 python manage.py createproject signals
 cd signal
 python manage.py createapp base
-cd model.py
+cd base/model.py
+Type these lines & hit save:
 ----------------------------------------
 from django.db import models                   
 from django.contrib.auth.models import User    
@@ -44,9 +45,9 @@ class Profile(models.Model):
     post_save.connect(update_profile, sender=User)
     
 '''
-
 ----------------------------------------
-Go to admin.py:
+This model connect Django User + my Profile ;)  
+Now Go to admin.py:
 ----------------------------------------
 from django.contrib import admin
 from base.models import Profile
@@ -66,17 +67,32 @@ class BaseConfig(AppConfig):
         import base.signals
 
 ----------------------------------------
-Go to signals.py:
+Create & Go to signals.py:
 ----------------------------------------
-from django.apps import AppConfig
+from django.contrib.auth.models import User
+from base.models import Profile
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
-class BaseConfig(AppConfig):
-    # default_auto_field = 'django.db.models.BigAutoField'
-    name = 'base'
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+        print('****************')
+        print('Profile created!')
+        print('****************')
 
-    def ready(self):
-        import base.signals
+
+# post_save.connect(create_profile, sender=User)
+
+@receiver(post_save, sender=User)
+def update_profile(sender, instance, created, **kwargs):
+    if created is False:
+        instance.profile.save()
+        print('****************')
+        print('Profile Updated!')
+        print('****************')
 
 ----------------------------------------
 python manage.py makemigrations
@@ -84,11 +100,11 @@ python manage.py migrate
 pip freeze > requirement.txt
 code .
 exit
-
+Inside vscode:
 Go to /admin
-Login as superuser
+Create & Login as superuser
 create/ update a user
-SEE Profile
+SEE Profile...
 
 Output:
 --------------------------
@@ -107,6 +123,7 @@ Profile Updated!
 [05/Apr/2023 02:26:01] "GET /admin/auth/user/ HTTP/1.1" 200 8968
 [05/Apr/2023 02:26:01] "GET /admin/jsi18n/ HTTP/1.1" 200 3195
 --------------------------
-
+There you have!
+Hope this will be helpful!
 j3
 March, 2023
