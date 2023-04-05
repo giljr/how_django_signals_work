@@ -53,7 +53,7 @@ Assuming you have Python setup, run the following commands (if you're on Windows
 
 ### Check list:  
 [Would you like some help?](https://youtu.be/tr_2k87AdYQ)
-Read **hystory.txt** file
+Read [hystory.txt](sygnal_demo/history.txt) file
 
 - [ ] pip3 install -r requirements.txt
 - [ ] python3 manage.py makemigrations
