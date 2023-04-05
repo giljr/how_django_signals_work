@@ -71,8 +71,7 @@ Read [hystory.txt](sygnal_demo/history.txt) file
 - [x] python3 -m pip install Pillow
 - [x] python3 manage.py runserver
 - [x] Open a browser to http://127.0.0.1:8000/admin/ to open the admin site
-- [x] Create a few products/Customers test objects of each type.
-- [x] Open tab to http://127.0.0.1:8000/customer ou /product to see the main site, with your new objects.
+- [x] Create a superuser see console output ;b
 
 ### License
 
