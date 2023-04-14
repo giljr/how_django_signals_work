@@ -1,25 +1,23 @@
-# How Django Signals Work - Stand-alone Project 
+# How Django-Allauth Works - Stand-alone Project 
 
 ```
 
-In Django, signals allow certain senders 
-to inform a set of receivers 
-that specific actions have occurred. 
-
-Django signals are used to send and 
-receive specific essential information 
-whenever a data model is 
-saved, changed, or even removed.
+Django-allauth is a Django package 
+that provides a set of views, templates, 
+and helper functions to handle 
+user authentication, registration, 
+and account management.
 
 ```
 ## What exactly is this project?
 ```
 It's a standalone Django Project
-Running a simple How Signals Works 
+Running a simple 
+How Django-Allauth Works
 in Django
 ```
 
-Based: Dennis Ivy [vid](https://youtu.be/Kc1Q_ayAeQk)
+Based: Code With Stein [video Tutorial](https://youtu.be/RyB_wdEZhOw)
 
 
 This is powered by [Django](https://www.djangoproject.com/) , a web framework for perfectionists with deadlines!
